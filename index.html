@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plato Chakma | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #0af;
+            --secondary: #ff4d94;
+            --dark: #0a0e17;
+            --darker: #06090f;
+            --light: #e0f7ff;
+            --terminal: #00ff41;
+            --success: #00ff41;
+            --warning: #ffcc00;
+            --danger: #ff4d4d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--darker);
+            color: var(--light);
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(10, 175, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 77, 148, 0.1) 0%, transparent 20%);
+            background-attachment: fixed;
+        }
+        
+        .terminal-font {
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        section {
+            padding: 80px 0;
+            position: relative;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+            font-weight: 700;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 70px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        /* Hero Section */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+        
+        .hero-title {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: #a0b0c0;
+        }
+        
+        .hero-quote {
+            font-size: 1.5rem;
+            font-style: italic;
+            margin: 40px 0;
+            color: var(--terminal);
+            border-left: 3px solid var(--terminal);
+            padding-left: 20px;
+            font-weight: 300;
+        }
+        
+        .terminal-container {
+            background: rgba(10, 15, 23, 0.8);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .terminal-dots {
+            display: flex;
+            gap: 8px;
+            margin-right: 10px;
+        }
+        
+        .terminal-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+        
+        .dot-red { background-color: #ff5f56; }
+        .dot-yellow { background-color: #ffbd2e; }
+        .dot-green { background-color: #27c93f; }
+        
+        .terminal-title {
+            font-size: 0.9rem;
+            color: #8892b0;
+        }
+        
+        .terminal-content {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .terminal-command {
+            color: var(--terminal);
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .terminal-output {
+            color: #e0f7ff;
+            display: block;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: var(--terminal);
+            margin-left: 4px;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 170, 255, 0.4);
+        }
+        
+        /* blinking Section */
+        .blinking-text {
+            animation: blink 3s steps(10, start) infinite;
+            color: #FF8C00; 
+            font-weight: bold; 
+        }
+
+        @keyframes blink {
+          to {
+          visibility: hidden;
+         }
+        }
+        /* Experience Section */
+        #experience {
+            background: rgba(10, 15, 23, 0.5);
+            backdrop-filter: blur(10px);
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            display: flex;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            justify-content: flex-end;
+            padding-right: 30px;
+        }
+        
+        .timeline-item:nth-child(even) {
+            justify-content: flex-start;
+            padding-left: 30px;
+        }
+        
+        .timeline-content {
+            background: rgba(20, 30, 48, 0.8);
+            border: 1px solid rgba(0, 255, 65, 0.1);
+            border-radius: 8px;
+            padding: 25px;
+            width: calc(50% - 40px);
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+        
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 170, 255, 0.3);
+            border-color: rgba(0, 255, 65, 0.3);
+        }
+        
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            top: 30px;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            right: -40px;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content::before {
+            left: -40px;
+        }
+        
+        .timeline-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .timeline-subtitle {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+        
+        .timeline-date {
+            color: #8892b0;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .timeline-description {
+            color: #c0c8d0;
+            line-height: 1.6;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        
+        .timeline-content.expanded .timeline-description {
+            max-height: 500px;
+        }
+        
+        .expand-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+        
+        .timeline-content.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* Education Section */
+        #education {
+            position: relative;
+        }
+        
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .education-card {
+            background: rgba(20, 30, 48, 0.8);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 65, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .education-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 170, 255, 0.2);
+            border-color: rgba(0, 255, 65, 0.3);
+        }
+        
+        .education-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .education-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .education-school {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+        
+        .education-details {
+            color: #a0b0c0;
+            margin-bottom: 20px;
+        }
+        
+        .education-year {
+            font-weight: 700;
+            color: var(--terminal);
+            font-size: 1.1rem;
+        }
+        
+        /* Skills Section */
+        #skills {
+            background: rgba(10, 15, 23, 0.5);
+            backdrop-filter: blur(10px);
+        }
+        
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .interests-container {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .skills-list {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .skills-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+        
+        .interest-item {
+            background: rgba(20, 30, 48, 0.5);
+            border: 1px solid rgba(0, 255, 65, 0.1);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .interest-item:hover {
+            transform: translateX(10px);
+            border-color: var(--primary);
+        }
+        
+        .interest-icon {
+            margin-right: 15px;
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .skill-category {
+            margin-bottom: 30px;
+        }
+        
+        .skill-category-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .skill-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .skill-item {
+            background: rgba(20, 30, 48, 0.8);
+            border: 1px solid rgba(0, 255, 65, 0.1);
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .skill-item:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 170, 255, 0.3);
+        }
+        
+        /* Certificates Section */
+        #certificates {
+            position: relative;
+        }
+        
+        .certificate-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .filter-btn {
+            background: rgba(20, 30, 48, 0.5);
+            border: 1px solid rgba(0, 255, 65, 0.1);
+            color: #c0c8d0;
+            border-radius: 30px;
+            padding: 8px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .certificate-card {
+            background: rgba(20, 30, 48, 0.8);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 65, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .certificate-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 170, 255, 0.2);
+            border-color: var(--primary);
+        }
+        
+        .certificate-img {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+        }
+        
+        .certificate-content {
+            padding: 20px;
+            position: relative;
+        }
+        
+        .certificate-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .certificate-issuer {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .certificate-date {
+            color: #8892b0;
+            font-size: 0.85rem;
+        }
+        
+        .view-certificate {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--terminal);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .certificate-card:hover .view-certificate {
+            opacity: 1;
+        }
+        
+        /* NEW: External link button */
+        .view-external {
+            position: fixed;
+            top: 0px;
+            border-bottom: 50px;
+            background: rgba(192, 192, 192, 0.5);
+            color: var(--white);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .certificate-card:hover .view-external {
+            opacity: 1;
+        }
+        
+        /* Cyberattack Visualization */
+        #cyberattack {
+            background: rgba(10, 15, 23, 0.8);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .attack-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .attack-stats {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .attack-map {
+            flex: 1;
+            min-width: 300px;
+            height: 400px;
+            background: rgba(10, 15, 23, 0.5);
+            border: 1px solid rgba(0, 255, 65, 0.1);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .world-map {
+            width: 100%;
+            height: 100%;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/8/83/Equirectangular_projection_SW.jpg') center/cover;
+            opacity: 0.7;
+            position: absolute;
+        }
+        
+        .attack-marker {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+        
+        .stat-card {
+            background: rgba(20, 30, 48, 0.8);
+            border: 1px solid rgba(0, 255, 65, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-title {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--terminal);
+            margin-bottom: 10px;
+        }
+        
+        .stat-description {
+            color: #a0b0c0;
+        }
+        
+        .chart-container {
+            height: 200px;
+            margin-top: 20px;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            padding: 60px 0 30px;
+            text-align: center;
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(20, 30, 48, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 255, 65, 0.1);
+        }
+        
+        .social-icon:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 170, 255, 0.3);
+        }
+        
+        .contact-email {
+            font-size: 1.1rem;
+            color: #8892b0;
+            margin-bottom: 30px;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .copyright {
+            color: #607080;
+            font-size: 0.9rem;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: var(--dark);
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid var(--primary);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            color: var(--primary);
+        }
+        
+        .modal-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .modal-body {
+            color: #c0c8d0;
+            line-height: 1.6;
+        }
+        
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 170, 255, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(0, 170, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 170, 255, 0); }
+        }
+        
+        .pulse {
+            animation: pulse 3s infinite;
+            border-radius: 50%;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                justify-content: flex-start !important;
+                padding-left: 60px !important;
+                padding-right: 0 !important;
+            }
+            
+            .timeline-content {
+                width: 100%;
+            }
+            
+            .timeline-item:nth-child(odd) .timeline-content::before {
+                left: -40px;
+                right: auto;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .skills-container {
+                flex-direction: column;
+            }
+            
+            .attack-container {
+                flex-direction: column;
+            }
+            
+            /* Mobile adjustments for external link */
+            .view-external {
+                right: 70px;
+                padding: 4px 8px;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Hero Section -->
+        <section id="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title fade-in">Plato Chakma</h1>
+                    <h2 class="hero-subtitle fade-in">Computer Science Graduate</h2>
+                    <p> I bring a strong sense of curiosity, self-motivation, and a deep passion for learning new technologies and solving real-world problems.</p>
+                    <div class="terminal-container fade-in">
+                        <div class="terminal-header">
+                            <div class="terminal-dots">
+                                <div class="terminal-dot dot-red"></div>
+                                <div class="terminal-dot dot-yellow"></div>
+                                <div class="terminal-dot dot-green"></div>
+                            </div>
+                            <div class="terminal-title">plato@cs-portfolio:~</div>
+                        </div>
+                        <div class="terminal-content">
+                            <span class="terminal-command">$ whoami</span>
+                            <span class="terminal-output">> Cybersecurity | Computer Networking | Informatics | AI Enthusiast</span>
+                            
+                            <span class="terminal-command">$ cat about.txt</span>
+                            <span class="terminal-output">> Ambivert | Reliable | Visionary </span>
+                            <span class="terminal-output">> Specializing in cisco networking, network security, ethical hacking, and threat analysis</span>
+                            <span class="terminal-output">> Committed to protecting digital assets and improving security postures</span>
+                            
+                            <span class="terminal-command">$ goals</span>
+                            <span class="terminal-output">> Join a cybersecurity team to defend against evolving threats</span>
+                            <span class="terminal-output">> Wanted to improve in healthcare technology & security</span>
+                            <span class="terminal-output">> Research applications of AI in cybersecurity</span>
+                            
+                            <span class="terminal-command">$ interests</span>
+                            <span class="terminal-output">> Network Security | Ethical Hacking | Threat Analysis | AI | Informatics</span>
+                            
+                            <span class="terminal-command">$ <span class="terminal-cursor"></span></span>
+                        </div>
+                    </div>
+                     <div class="hero-title">Starting Fresh, Eager to Learn</div>
+                    <div class="hero-quote fade-in">"Knowing is Power"</div>
+                    <div class="hero blinking-text"> "I am actively seeking research opportunities in the fields of: Informatics and AI" </div>
+                     <p> <br> Previously, I focused on a professional and industry-oriented path, but I am now actively seeking opportunities in academic or applied research. While not having direct research experience, I have a strong foundation in technology, problem-solving mentality, and a genuine interest to learn. </p>
+                    
+                    <div class="hero-buttons">
+                        <a href="images/Plato's Resume.pdf" class="btn btn-primary" @click="downloadResume">
+                            <i class="fas fa-download"></i> Download Resume
+                        </a>
+                        <a href="https://docs.google.com/document/d/1eEuoN5uUkta050whu8j3-oUmqHGKodaEWR-BwiuUf-c/edit?usp=sharing" class="btn btn-outline" @click="viewResume">
+                            <i class="fas fa-eye"></i> View Online
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Experience Section -->
+        <section id="experience">
+            <div class="container">
+                <h2 class="section-title fade-in">Professional Experience</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-item fade-in" v-for="(exp, index) in experiences" :key="index">
+                        <div class="timeline-content" :class="{expanded: exp.expanded}" @click="toggleExperience(index)">
+                            <h3 class="timeline-title">{{ exp.title }}</h3>
+                            <div class="timeline-subtitle">{{ exp.company }}</div>
+                            <div class="timeline-date">{{ exp.date }}</div>
+                            <div class="timeline-description" v-html="exp.description"></div>
+                            <div class="expand-icon">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Education Section -->
+        <section id="education">
+            <div class="container">
+                <h2 class="section-title fade-in">Education</h2>
+                
+                <div class="education-grid">
+                    <div class="education-card fade-in">
+                        <div class="education-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="education-title">BSc Computer Science and Engineering</h3>
+                        <div class="education-school">Islamic University, Bangladesh</div>
+                       <!-- <div class="education-details">CGPA: 2.95/4.0</div> -->
+                        <div class="education-year">Graduated: 2022</div>
+                    </div>
+                    
+                    <div class="education-card fade-in">
+                        <div class="education-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <h3 class="education-title">Computer Science</h3>
+                        <div class="education-school">University of South Dakota, USA</div>
+                        <div class="education-details">Informatics</div>
+                        <div class="education-year">Starting Fall 2025</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Skills Section -->
+        <section id="skills">
+            <div class="container">
+                <h2 class="section-title fade-in">Skills & Interests</h2>
+                
+                <div class="skills-container">
+                    <div class="interests-container fade-in">
+                        <h3 class="skills-title">My Interests</h3>
+                        
+                        <div class="interest-item">
+                            <div class="interest-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div>Cybersecurity & Ethical Hacking</div>
+                        </div>
+                        
+                        <div class="interest-item">
+                            <div class="interest-icon">
+                                <i class="fas fa-network-wired"></i>
+                            </div>
+                            <div>Network Engineering & Security</div>
+                        </div>
+                        
+                        <div class="interest-item">
+                            <div class="interest-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div>Artificial Intelligence & Machine Learning</div>
+                        </div>
+                        
+                        <div class="interest-item">
+                            <div class="interest-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div>Data Informatics & Analysis</div>
+                        </div>
+                        
+                        <div class="interest-item">
+                            <div class="interest-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div>Programming & Development</div>
+                        </div>
+                    </div>
+                    
+                    <div class="skills-list fade-in">
+                        <h3 class="skills-title">Technical Skills</h3>
+                        
+                        <div class="skill-category">
+                            <h4 class="skill-category-title">Security Tools</h4>
+                            <div class="skill-items">
+                                <div class="skill-item">Nmap</div>
+                                <div class="skill-item">Nessus</div>
+                                <div class="skill-item">Burp Suite</div>
+                                <div class="skill-item">Wireshark</div>
+                                <div class="skill-item">Metasploit</div>
+                                <div class="skill-item">Splunk</div>
+                                <div class="skill-item">Acunetix</div>
+                                <div class="skill-item">SQLMap</div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-category">
+                            <h4 class="skill-category-title">Networking</h4>
+                            <div class="skill-items">
+                                <div class="skill-item">Cisco Packet Tracer</div>
+                                <div class="skill-item">TCP/IP</div>
+                                <div class="skill-item">Firewalls</div>
+                                <div class="skill-item">VPN</div>
+                                <div class="skill-item">IP Addressing</div>
+                                <div class="skill-item">Network Protocols</div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-category">
+                            <h4 class="skill-category-title">Programming</h4>
+                            <div class="skill-items">
+                                <div class="skill-item">Python</div>
+                                <div class="skill-item">C</div>
+                                <div class="skill-item">Bash Scripting</div>
+                                <div class="skill-item">Linux</div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-category">
+                            <h4 class="skill-category-title">Concepts</h4>
+                            <div class="skill-items">
+                                <div class="skill-item">Vulnerability Assessment</div>
+                                <div class="skill-item">Threat Analysis</div>
+                                <div class="skill-item">Cryptography</div>
+                                <div class="skill-item">Risk Management</div>
+                                <div class="skill-item">Incident Response</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Certificates Section -->
+        <section id="certificates">
+            <div class="container">
+                <h2 class="section-title fade-in">Certificates & Achievements</h2>
+                
+                <div class="certificate-filters">
+                    <div class="filter-btn" 
+                         v-for="(filter, index) in filters" 
+                         :key="index"
+                         :class="{active: activeFilter === filter}"
+                         @click="activeFilter = filter">
+                        {{ filter }}
+                    </div>
+                </div>
+                
+                <div class="certificates-grid">
+                    <div class="certificate-card fade-in" 
+                         v-for="(cert, index) in filteredCertificates" 
+                         :key="index"
+                         @click="openModal(cert)">
+                        <div class="certificate-img">
+                            <i :class="cert.icon"></i>
+                        </div>
+                        <div class="certificate-content">
+                            <h3 class="certificate-title">{{ cert.title }}</h3>
+                            <div class="certificate-issuer">{{ cert.issuer }}</div>
+                            <div class="certificate-date">{{ cert.date }}</div>
+                          <!--  <div class="view-certificate">Click to view</div> -->
+                            
+                            <!-- NEW: External link button -->
+                            <a v-if="cert.url" class="view-external" :href="cert.url" target="_blank" @click.stop>
+                                <i class="fas fa-external-link-alt"></i> Click Here to View Certificate
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Cyberattack Visualization -->
+        <section id="cyberattack">
+            <div class="container">
+                <h2 class="section-title fade-in">Global Cyberattack Dashboard</h2>
+                
+                <div class="attack-container">
+                    <div class="attack-stats">
+                        <div class="stat-card">
+                            <div class="stat-title">ATTACKS IN LAST HOUR</div>
+                            <div class="stat-value">{{ attackStats.currentHour }}</div>
+                            <div class="stat-description">Worldwide cyber incidents detected</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-title">TOP ATTACK TYPE</div>
+                            <div class="stat-value">Phishing</div>
+                            <div class="stat-description">35% of all attacks</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-title">MOST TARGETED COUNTRY</div>
+                            <div class="stat-value">United States</div>
+                            <div class="stat-description">28% of global attacks</div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <canvas id="attackChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="attack-map">
+                        <div class="world-map"></div>
+                        <div class="attack-marker" 
+                             v-for="(marker, index) in attackMarkers" 
+                             :key="index"
+                             :style="{left: marker.x + '%', top: marker.y + '%', backgroundColor: marker.color}"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="social-icons">
+                    <a href="https://github.com/pcplato" target="_blank" class="social-icon">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/plato-chakma/" target="_blank" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.facebook.com/plato.chakma/" target="_blank" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </div>
+                
+                <div class="contact-email">
+                    plato[dot]chakma@coyotes[dot]usd[dot]edu
+                </div>
+                
+                <div class="copyright">
+                    &copy; 2025 Plato Chakma. All Rights Reserved.
+                </div>
+            </div>
+        </footer>
+        
+        <!-- Certificate Modal -->
+        <div class="modal" :class="{active: modalOpen}">
+            <div class="modal-content">
+                <div class="modal-close" @click="modalOpen = false">
+                    <i class="fas fa-times"></i>
+                </div>
+                <h2 class="modal-title">{{ currentCertificate.title }}</h2>
+                <div class="modal-body">
+                    <p><strong>Issuer:</strong> {{ currentCertificate.issuer }}</p>
+                    <p><strong>Date:</strong> {{ currentCertificate.date }}</p>
+                    <p><strong>Description:</strong> {{ currentCertificate.description }}</p>
+                    <p><strong>Skills Acquired:</strong> {{ currentCertificate.skills }}</p>
+                    
+                    <div style="margin: 30px 0; text-align: center;">
+                        <div class="certificate-img" style="width: 100%; max-width: 500px; margin: 0 auto;">
+                            <i :class="currentCertificate.icon"></i>
+                        </div>
+                    </div>
+                    
+                    <p>This certification demonstrates proficiency in {{ currentCertificate.title }} through comprehensive coursework and practical assessments.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Vue app
+        new Vue({
+            el: '#app',
+            data: {
+                experiences: [
+                    {
+                        title: "Mastercard Cybersecurity virtual experience program on Forage",
+                        company: "Forage",
+                        date: "2023",
+                        description: "Performed network discovery and security auditing with Nmap, vulnerability scans with Nessus, web application security testing with Burp Suite, password cracking with HashCat, and SQL injection testing with SQLMap. Discovered and reported security vulnerabilities, detailed reports on possible security issues and improved security.",
+                        expanded: false
+                    },
+                    {
+                        title: "Cybersecurity Trainee",
+                        company: "Extent IT Limited (EDGE Project)",
+                        date: "June 2023 – September 2023",
+                        description: "An intensive basic cyber security course with topics including network security, cryptography, and risk management. Listened to cyber threat landscapes different types of attack vectors, and defense mechanisms.",
+                        expanded: false
+                    },
+                    {
+                        title: "Virtual Intern",
+                        company: "ANZ Australia",
+                        date: "June 2023",
+                        description: "Performed social engineering investigations, specializing in phishing attempts, pretexting, and other social engineering techniques. Created and executed plans to prevent human-based security risks. Conducted digital forensic examination with the help of Wireshark only by capturing the network traffic checking for malicious activity and able to trace the activities that happened. Identified vulnerabilities and recommendations to secure the network and improve incident response practices, with documented findings.",
+                        expanded: false
+                    },
+                    {
+                        title: "TechnoHacks Edutech India (Virtual)",
+                        company: "TechnoHacks Edutech",
+                        date: "September 2023 - October 2023",
+                        description: "Conducted digital forensic examinations using Wireshark, capturing and analyzing network traffic to detect malicious activities. Vulnerability identification and mitigation.",
+                        expanded: false
+                    }
+                ],
+                certificates: [
+                    {
+                        title: "Google Cybersecurity",
+                        issuer: "Coursera",
+                        date: "2023",
+                        category: "Cybersecurity",
+                        icon: "fab fa-google",
+                        description: "Comprehensive cybersecurity program covering foundations of cybersecurity, detection and response, and security operations.",
+                        skills: "Threat detection, Security analysis, Incident response",
+                        url: "https://coursera.org/share/99700bad33a0c8c333f641d500952703"
+                    },
+                    {
+                        title: "Microsoft Cybersecurity Analyst",
+                        issuer: "Coursera",
+                        date: "2023",
+                        category: "Cybersecurity",
+                        icon: "fab fa-microsoft",
+                        description: "Specialized training in identifying and mitigating cybersecurity threats using Microsoft security tools.",
+                        skills: "Microsoft Defender, Azure Security, Threat intelligence",
+                        url: "https://coursera.org/share/f4ce40730110bf43743132d46898e913"
+                    },
+                    {
+                        title: "Crash Course on Python",
+                        issuer: "Coursera",
+                        date: "2023",
+                        category: "Programming",
+                        icon: "fab fa-python",
+                        description: "Understand what Python is and why Python is relevant to automation.",
+                        skills: "Computational Thinking, Algorithms, Data Structures",
+                        url: "https://coursera.org/share/e8a275c6edae2cf1196f0d2ca4c22593"
+                    },
+                    {
+                        title: "Cybersecurity Training",
+                        issuer: "Extent IT Ltd.",
+                        date: "2023",
+                        category: "cybersecurity",
+                        icon: "fas fa-user-secret",
+                        description: "Developed course content on network security, cryptography, and risk management.",
+                        skills: "Cybersecurity,TCP/IP, IT Audit, Vulnerability Assessment, Network security",
+                        url: "https://drive.google.com/file/d/1nkqRoKLFpNn4aEgp0qnmCm2irNu3gQmS/view?usp=sharing"
+                    },
+                    {
+                        title: "Networking Fundamentals",
+                        issuer: "Cisco",
+                        date: "2022",
+                        category: "Networking",
+                        icon: "fas fa-network-wired",
+                        description: "Fundamental networking concepts including protocols, infrastructure, and security.",
+                        skills: "TCP/IP, Routing, Network security",
+                        url: "https://www.cisco.com/c/en/us/training-events/training-certifications/certifications/associate/ccna.html"
+                    },
+                    {
+                        title: "Linux Workshop",
+                        issuer: "IEEE BUBT",
+                        date: "2021",
+                        category: "Linux",
+                        icon: "fas fa-terminal",
+                        description: "Fundamental Linux Distro concepts terminal command, infrastructure, and security.",
+                        skills: "Terminal, File management, Security",
+                        url: "https://drive.google.com/file/d/1_UValQECesc7uWPfj0DindkR6ZMj_Scw/view?usp=sharing"
+                    },
+                    {
+                        title: "Leadership Workshop",
+                        issuer: "Movers Programme United Nations",
+                        date: "2021",
+                        category: "Others",
+                        icon: "fas fa-users",
+                        description: "This Movers Workshop is organised and facilitated by volunteers of the Movers Programme in order to raise awareness about the United Nations (UN) Sustainable Development Goals (SDGs) and enhance the entrepreneurial mindset and 21st-century skills of youth.",
+                        skills: "Terminal, File management, Security",
+                        url: "https://drive.google.com/file/d/1SSGMl52hs63dy5TIBmMskJIryKbkHmFw/view?usp=sharing"
+                    },
+                    {
+                        title: "Google IT Support",
+                        issuer: "Coursera",
+                        date: "2020",
+                        category: "IT Support",
+                        icon: "fas fa-laptop-code",
+                        description: "Professional IT support training covering troubleshooting, customer service, and system administration.",
+                        skills: "Troubleshooting, System administration, Customer support",
+                        url: "https://coursera.org/share/cfec7e57978c5ae087d2346b36efb722"
+                    },
+                    {
+                        title: "Competitive Programming Award",
+                        issuer: "Islamic University",
+                        date: "2016",
+                        category: "Achievements",
+                        icon: "fas fa-medal",
+                        description: "Award for excellence in the university's competitive programming contest.",
+                        skills: "Problem-solving, Algorithm design, Coding efficiency",
+                        url: ""
+                    }
+                ],
+                filters: ["All", "Cybersecurity", "Networking", "IT Support", "Achievements", "Programming","Linux", "Others"],
+                activeFilter: "All",
+                modalOpen: false,
+                currentCertificate: {
+                    title: "",
+                    issuer: "",
+                    date: "",
+                    icon: "",
+                    description: "",
+                    skills: "",
+                    url: ""
+                },
+                attackStats: {
+                    currentHour: 12458,
+                    topAttack: "Phishing",
+                    topCountry: "United States"
+                },
+                attackMarkers: [
+                    {x: 15, y: 30, color: "#ff4d4d"},
+                    {x: 40, y: 35, color: "#ff4d4d"},
+                    {x: 75, y: 35, color: "#ff4d4d"},
+                    {x: 45, y: 45, color: "#ff4d4d"},
+                    {x: 20, y: 25, color: "#ffcc00"},
+                    {x: 60, y: 30, color: "#ffcc00"},
+                    {x: 35, y: 40, color: "#ffcc00"},
+                    {x: 50, y: 30, color: "#00ff41"},
+                    {x: 25, y: 35, color: "#00ff41"},
+                    {x: 70, y: 40, color: "#00ff41"}
+                ],
+                attackChart: null
+            },
+            computed: {
+                filteredCertificates() {
+                    if (this.activeFilter === "All") {
+                        return this.certificates;
+                    }
+                    return this.certificates.filter(cert => cert.category === this.activeFilter);
+                }
+            },
+            mounted() {
+                // Initialize scroll animations
+                this.initScrollAnimations();
+                
+                // Initialize attack chart
+                this.initAttackChart();
+                
+                // Simulate real-time cyberattack updates
+                setInterval(() => {
+                    this.updateAttackStats();
+                }, 3000);
+            },
+            methods: {
+                initScrollAnimations() {
+                    // Create observer for fade-in elements
+                    const fadeElements = document.querySelectorAll('.fade-in');
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('appear');
+                            }
+                        });
+                    }, {
+                        threshold: 0.1,
+                        rootMargin: '0px 0px -50px 0px'
+                    });
+                    
+                    // Observe each fade-in element
+                    fadeElements.forEach(element => {
+                        observer.observe(element);
+                    });
+                },
+                
+                toggleExperience(index) {
+                    this.experiences[index].expanded = !this.experiences[index].expanded;
+                },
+                
+                openModal(cert) {
+                    this.currentCertificate = {...cert};
+                    this.modalOpen = true;
+                },
+                
+                downloadResume() {
+                    //alert("Resume download would start now in a real implementation");
+                },
+                
+                viewResume() {
+                    //alert("Resume would be displayed in a modal here");
+                },
+                
+                initAttackChart() {
+                    const ctx = document.getElementById('attackChart').getContext('2d');
+                    this.attackChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                            datasets: [{
+                                label: 'Cyberattacks per hour',
+                                data: [8560, 9245, 10520, 12458, 11840, 13210],
+                                borderColor: '#00ff41',
+                                backgroundColor: 'rgba(0, 255, 65, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: 'rgba(255, 255, 255, 0.1)'
+                                    },
+                                    ticks: {
+                                        color: '#a0b0c0'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        color: 'rgba(255, 255, 255, 0.1)'
+                                    },
+                                    ticks: {
+                                        color: '#a0b0c0'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                },
+                
+                updateAttackStats() {
+                    // Simulate fluctuating attack numbers
+                    const change = Math.floor(Math.random() * 1000) - 500;
+                    this.attackStats.currentHour = Math.max(10000, this.attackStats.currentHour + change);
+                    
+                    // Add new attack markers
+                    const newMarker = {
+                        x: Math.random() * 80 + 10,
+                        y: Math.random() * 70 + 15,
+                        color: ['#ff4d4d', '#ffcc00', '#00ff41'][Math.floor(Math.random() * 3)]
+                    };
+                    this.attackMarkers.push(newMarker);
+                    
+                    // Remove old markers
+                    if (this.attackMarkers.length > 15) {
+                        this.attackMarkers.shift();
+                    }
+                    
+                    // Update chart data
+                    const newData = [...this.attackChart.data.datasets[0].data];
+                    newData.shift();
+                    newData.push(this.attackStats.currentHour);
+                    this.attackChart.data.datasets[0].data = newData;
+                    this.attackChart.update();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
